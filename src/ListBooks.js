@@ -1,8 +1,8 @@
 import React from 'react'
 
-const ListBooks = ({ books, title }) => {
+const ListBooks = ({ books, bookStatus, shelf, onChangeShelf }) => {
 
-	const currentBooks = books.filter((book) => book.status === title)
+	const currentBooks = books.filter((book) => book.shelf === shelf)
 	return (
 		<ol className="books-grid">
 			{currentBooks.map((book) => (
@@ -12,15 +12,17 @@ const ListBooks = ({ books, title }) => {
 			              	<div className="book-cover" style={{ 
 				                width: 128, 
 				                height: 193,
-				                backgroundImage: `url(${book.image})`
+				                backgroundImage: `url(${book.imageLinks.smallThumbnail})`
 				            }}/>
 				            <div className="book-shelf-changer">
-				            	<select>
-									<option value="none" disabled>Move to...</option>
-									<option value="currentlyReading">Currently Reading</option>
-									<option value="wantToRead">Want to Read</option>
-									<option value="read">Read</option>
-									<option value="none">None</option>
+				            	<select onChange={(e) => onChangeShelf(book, e.target.value)} value={book.shelf}>
+				            		{bookStatus.map((status, index) => (
+										<option 
+											key={status.id} 
+											value={status.shelf}
+											disabled={index === 0}
+										>{status.option}</option>
+				            		))}
 								</select>
 				            </div>
 			            </div>

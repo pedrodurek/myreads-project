@@ -9,21 +9,47 @@ class ShelfBooks extends Component {
 		contentTitle: [
 			{
 				id: 1,
-				title: 'Currently Reading'
+				title: 'Currently Reading',
+				shelf: 'currentlyReading'
 			},{
 				id: 2,
-				title: 'Want to Read'
+				title: 'Want to Read',
+				shelf: 'wantToRead'
 			},{
 				id: 3,
-				title: 'Read'
+				title: 'Read',
+				shelf: 'read'
+			}
+		],
+		bookStatus: [
+			{
+				id: 1,
+				option: 'Move to...',
+				shelf: 'none'
+			}, {
+				id: 2,
+				option: 'Currently Reading',
+				shelf: 'currentlyReading'
+			}, {
+				id: 3,
+				option: 'Want to Read',
+				shelf: 'wantToRead'
+			}, {
+				id: 4,
+				option: 'Read',
+				shelf: 'read'
+			}, {
+				id: 5,
+				option: 'None',
+				shelf: 'none'
 			}
 		]
 	}
 
 	render() {
 	
-		const { contentTitle } = this.state
-		const { books } = this.props
+		const { contentTitle, bookStatus } = this.state
+		const { books, onChangeShelf } = this.props
 		return (
 			<div className="list-books">
 				<div className="list-books-title">
@@ -35,7 +61,12 @@ class ShelfBooks extends Component {
 							<div key={content.id} className="bookshelf">
 								<h2 className="bookshelf-title">{content.title}</h2>
 								<div className="bookshelf-books">
-									<ListBooks books={books} title={content.title} />
+									<ListBooks 
+										books={books}
+										bookStatus={bookStatus} 
+										shelf={content.shelf}
+										onChangeShelf={onChangeShelf}
+									/>
 								</div>
 							</div>
 						))}
