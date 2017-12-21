@@ -1,12 +1,12 @@
 import React from 'react'
 import { PulseLoader } from 'react-spinners';
 import PropTypes from 'prop-types'
-import If from './If'
+import { If } from 'react-if';
 
 const Loading = ({ enabled, fullScreen }) => {
 	
 	return (
-		<If test={enabled}>
+		<If condition={enabled}>
 			<div className="loading-component" style={{position: fullScreen?'fixed':'absolute'}}>
 				<PulseLoader
 					color={'#36d7b7'} 

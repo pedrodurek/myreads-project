@@ -22,6 +22,9 @@ class SearchBooks extends Component {
 			
 			if (books instanceof Array) {
 				
+				const { booksOnShelf } = this.props
+				const booksInListOnShelf = books.filter((b) => booksOnShelf.filter((book) => b.id === book.id).length)
+				console.log(booksInListOnShelf)
 				books.forEach((book) => book.shelf = 'nil')
 				this.setState({ books })
 
