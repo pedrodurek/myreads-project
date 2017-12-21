@@ -8,14 +8,18 @@ import './App.css'
 class BooksApp extends Component {
 
 	state = {
+		loading: false,
 		books: []
 	}
 
 	componentDidMount() {
 
+		this.setState({ loading: true })
 		BooksAPI.getAll().then((books) => {
-			console.log(books)
+
+			this.setState({ loading: false })
 			this.setState({ books })
+
 		})
 
 	}
@@ -26,9 +30,10 @@ class BooksApp extends Component {
 		books = books.filter((b) => b.id !== book.id).concat({
 			...book,
 			shelf
-		});
+		})
+		this.setState({ loading: true })
 		BooksAPI.update(book, shelf).then((result) => {
-			this.setState({ books });
+			this.setState({ books, loading: false });
 		})
 
 	}
@@ -40,11 +45,12 @@ class BooksApp extends Component {
 				<Route exact path="/" render={() => (
 		  		    <ShelfBooks 
 		  		    	books={this.state.books}
+		  		    	loadingPage={this.state.loading}
 		  		    	onChangeShelf={this.changeShelf}
 		  		    />
 				)}/>
 				<Route path="/search" render={() => (
-					<SearchBooks />
+					<SearchBooks onChangeShelf={this.changeShelf} />
 				)}/>
 	  		</div>
 		)

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-// import If from './If'
 import ListBooks from './ListBooks'
+import Loading from './Loading'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class ShelfBooks extends Component {
 	
@@ -20,38 +21,16 @@ class ShelfBooks extends Component {
 				title: 'Read',
 				shelf: 'read'
 			}
-		],
-		bookStatus: [
-			{
-				id: 1,
-				option: 'Move to...',
-				shelf: 'none'
-			}, {
-				id: 2,
-				option: 'Currently Reading',
-				shelf: 'currentlyReading'
-			}, {
-				id: 3,
-				option: 'Want to Read',
-				shelf: 'wantToRead'
-			}, {
-				id: 4,
-				option: 'Read',
-				shelf: 'read'
-			}, {
-				id: 5,
-				option: 'None',
-				shelf: 'none'
-			}
 		]
 	}
 
 	render() {
 	
-		const { contentTitle, bookStatus } = this.state
-		const { books, onChangeShelf } = this.props
+		const { contentTitle } = this.state
+		const { books, loadingPage, onChangeShelf } = this.props
 		return (
 			<div className="list-books">
+				<Loading enabled={loadingPage} fullScreen={true} />
 				<div className="list-books-title">
 					<h1>MyReads</h1>
 				</div>
@@ -63,7 +42,6 @@ class ShelfBooks extends Component {
 								<div className="bookshelf-books">
 									<ListBooks 
 										books={books}
-										bookStatus={bookStatus} 
 										shelf={content.shelf}
 										onChangeShelf={onChangeShelf}
 									/>
@@ -81,4 +59,13 @@ class ShelfBooks extends Component {
 
 }
 
+ListBooks.propTypes = {
+	books: PropTypes.array.isRequired,
+	loadingPage: PropTypes.bool,
+	onChangeShelf: PropTypes.func.isRequired
+}
+
+Loading.defaultProps = {
+  	loadingPage: false
+}
 export default ShelfBooks

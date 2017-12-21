@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-const ListBooks = ({ books, bookStatus, shelf, onChangeShelf }) => {
+const ListBooks = ({ books, shelf, onChangeShelf }) => {
 
 	const currentBooks = books.filter((book) => book.shelf === shelf)
 	return (
@@ -16,13 +17,11 @@ const ListBooks = ({ books, bookStatus, shelf, onChangeShelf }) => {
 				            }}/>
 				            <div className="book-shelf-changer">
 				            	<select onChange={(e) => onChangeShelf(book, e.target.value)} value={book.shelf}>
-				            		{bookStatus.map((status, index) => (
-										<option 
-											key={status.id} 
-											value={status.shelf}
-											disabled={index === 0}
-										>{status.option}</option>
-				            		))}
+				            		<option value="nil" disabled>Move to...</option>
+	                                <option value="currentlyReading">Currently Reading</option>
+	                                <option value="wantToRead">Want to Read</option>
+	                                <option value="read">Read</option>
+	                                <option value="none">None</option>
 								</select>
 				            </div>
 			            </div>
@@ -34,6 +33,16 @@ const ListBooks = ({ books, bookStatus, shelf, onChangeShelf }) => {
 		</ol>
 	)
 
+}
+
+ListBooks.propTypes = {
+	books: PropTypes.array.isRequired,
+	onChangeShelf: PropTypes.func.isRequired,
+	shelf: PropTypes.string
+}
+
+ListBooks.defaultProps = {
+  	shelf: 'nil'
 }
 
 export default ListBooks

@@ -1,27 +1,45 @@
 import React, { Component } from 'react';
+import Notifications, {notify} from 'react-notify-toast';
 import { Link } from 'react-router-dom'
+import ListBooks from './ListBooks'
+import Loading from './Loading'
 import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types'
 
-export class SearchBooks extends Component {
+class SearchBooks extends Component {
 
 	state = {
-		query: ''
+		loading: false,
+		books: []
 	}
 
 	searchBook = (query) => {
 
-		if (query) {
-			console.log(query)
-			BooksAPI.search(query).then((books) => {
-				console.log(books)
-			})
-		}
+
+		this.setState({ loading: true })
+		BooksAPI.search(query).then((books) => {
+			
+			if (books) {
+				
+				books.forEach((book) => book.shelf = 'nil')
+				this.setState({ books })
+
+			} else {
+				this.setState({ books: [] })
+			}
+			this.setState({ loading: false })
+
+		})
+
 	}
 
 	render() {
 
+		const { books, loading } = this.state
+		const { onChangeShelf } = this.props
 		return (
 			<div className="search-books">
+				<Notifications />
 		        <div className="search-books-bar">
 		        	<Link className="close-search" to="/">Close</Link>
 		            <div className="search-books-input-wrapper">
@@ -35,7 +53,16 @@ export class SearchBooks extends Component {
 		            </div>
 		        </div>
 		        <div className="search-books-results">
-		            <ol className="books-grid"></ol>
+		        	<div className="parent-loading">
+			        	<Loading enabled={loading} />
+			            <ListBooks 
+							books={books}
+							onChangeShelf={(book, shelf) => {
+								notify.show(`Livro "${book.title}" incluido com sucesso!`, 'success', 3000)
+								onChangeShelf(book, shelf)
+							}}
+			            />
+		        	</div>
 		        </div>
 			</div>
 		)
@@ -44,5 +71,8 @@ export class SearchBooks extends Component {
 
 }
 
+SearchBooks.propTypes = {
+	onChangeShelf: PropTypes.func.isRequired
+}
 
 export default SearchBooks
