@@ -9,6 +9,21 @@ class BooksApp extends Component {
 
 	state = {
 		loading: false,
+		contentShelfBooks: [
+			{
+				id: 1,
+				title: 'Currently Reading',
+				shelf: 'currentlyReading'
+			},{
+				id: 2,
+				title: 'Want to Read',
+				shelf: 'wantToRead'
+			},{
+				id: 3,
+				title: 'Read',
+				shelf: 'read'
+			}
+		],
 		books: []
 	}
 
@@ -16,10 +31,7 @@ class BooksApp extends Component {
 
 		this.setState({ loading: true })
 		BooksAPI.getAll().then((books) => {
-
-			this.setState({ loading: false })
-			this.setState({ books })
-
+			this.setState({ books, loading: false })
 		})
 
 	}
@@ -39,13 +51,15 @@ class BooksApp extends Component {
 	}
 
   	render() {
-
+		
+		const { books, contentShelfBooks, loading } = this.state;
 		return (
 	  		<div className="app">
 				<Route exact path="/" render={() => (
 		  		    <ShelfBooks 
-		  		    	books={this.state.books}
-		  		    	loadingPage={this.state.loading}
+		  		    	books={books}
+		  		    	contentShelfBooks={contentShelfBooks}
+		  		    	loadingPage={loading}
 		  		    	onChangeShelf={this.changeShelf}
 		  		    />
 				)}/>
