@@ -16,17 +16,24 @@ class SearchBooks extends Component {
 
 	searchBook = (query) => {
 
-
 		this.setState({ loading: true })
-		BooksAPI.search(query).then((books) => {
+		BooksAPI.search(query).then((booksInSearch) => {
 			
-			if (books instanceof Array) {
+			if (booksInSearch instanceof Array) {
 				
 				const { booksOnShelf } = this.props
-				const booksInListOnShelf = books.filter((b) => booksOnShelf.filter((book) => b.id === book.id).length)
-				console.log(booksInListOnShelf)
-				books.forEach((book) => book.shelf = 'nil')
-				this.setState({ books })
+				/*  I don't know whether the following solution is the best for our needs or not, 
+				but it was the only solution (using programming functional) I could think of. 
+				I also would like to know, which solutions fit better for this case. Thanks! */
+
+				/*  Filter the books in the shelf which are in the search returned */
+				const booksInSearchOnShelf = booksOnShelf.filter((b) => booksInSearch.map((book) => book.id).includes(b.id))
+				/* Filter the books in search returned which are on the shelf */
+				booksInSearch = booksInSearch.filter((b) => !booksOnShelf.map((book) => book.id).includes(b.id))
+				/* Concatenates both filters */
+				const result = booksInSearch.concat(booksInSearchOnShelf)
+
+				this.setState({ books: result })
 
 			} else {
 				this.setState({ books: [] })

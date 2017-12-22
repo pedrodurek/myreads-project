@@ -1,7 +1,8 @@
 import React from 'react'
 import ListBooks from './ListBooks'
 import Loading from './Loading'
-import { Link } from 'react-router-dom'
+import Header from './Header'
+import SearchButton from './SearchButton'
 import PropTypes from 'prop-types'
 
 const ShelfBooks = ({ books, contentShelfBooks, loadingPage, onChangeShelf }) => {
@@ -9,9 +10,7 @@ const ShelfBooks = ({ books, contentShelfBooks, loadingPage, onChangeShelf }) =>
 	return (
 		<div className="list-books">
 			<Loading enabled={loadingPage} fullScreen={true} />
-			<div className="list-books-title">
-				<h1>MyReads</h1>
-			</div>
+			<Header title={'MyReads'} />
 			<div className="list-books-content">
 				<div>
 					{contentShelfBooks.map((content) => (
@@ -28,9 +27,7 @@ const ShelfBooks = ({ books, contentShelfBooks, loadingPage, onChangeShelf }) =>
 					))}
 				</div>
 			</div>
-			<div className="open-search">
-				<Link to="/search">Add a book</Link>
-			</div>
+			<SearchButton />
 		</div>
 	)
 

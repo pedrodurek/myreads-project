@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import BooksInfo from './BooksInfo'
 
 const ListBooks = ({ books, shelf, onChangeShelf }) => {
 
-	const currentBooks = books.filter((book) => book.shelf === shelf)
+	const currentBooks = books.filter((book) => book.shelf === shelf || !shelf)
 	return (
 		<ol className="books-grid">
 			{currentBooks.map((book) => (
@@ -16,7 +17,7 @@ const ListBooks = ({ books, shelf, onChangeShelf }) => {
 				                backgroundImage: `url(${book.imageLinks.smallThumbnail})`
 				            }}/>
 				            <div className="book-shelf-changer">
-				            	<select onChange={(e) => onChangeShelf(book, e.target.value)} value={book.shelf}>
+				            	<select onChange={(e) => onChangeShelf(book, e.target.value)} value={book.shelf || 'nil'}>
 				            		<option value="nil" disabled>Move to...</option>
 	                                <option value="currentlyReading">Currently Reading</option>
 	                                <option value="wantToRead">Want to Read</option>
@@ -25,8 +26,7 @@ const ListBooks = ({ books, shelf, onChangeShelf }) => {
 								</select>
 				            </div>
 			            </div>
-			            <div className="book-title">{book.title}</div>
-  		                <div className="book-authors">{book.authors}</div>
+			            <BooksInfo book={book} />
 		          	</div>
 		        </li>
 			))}
@@ -39,10 +39,6 @@ ListBooks.propTypes = {
 	books: PropTypes.array.isRequired,
 	onChangeShelf: PropTypes.func.isRequired,
 	shelf: PropTypes.string
-}
-
-ListBooks.defaultProps = {
-  	shelf: 'nil'
 }
 
 export default ListBooks
